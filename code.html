@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Itsar Irsyada Surga - AI Engineer &amp; Project Leader</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#FACC15",
+                    "off-white": "#F8FAFC",
+                    "light-blue": "#E0E7FF",
+                    "soft-teal": "#E6FFFA",
+                    "dark-blue": "#1E3A8A",
+                    "navy": "#0F172A",
+                    "dark-text": "#111827",
+                    "light-text": "#F8FAFC",
+                },
+                fontFamily: {
+                    "display": ["Poppins", "sans-serif"]
+                },
+                borderRadius: {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+                },
+            },
+        },
+    }
+</script>
+<style>
+    .glow-border {
+        position: relative;
+    }
+    .glow-border::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 0.5rem;border: 2px solid transparent;
+        background: linear-gradient(to right, #3B82F6, #1E3A8A, #3B82F6) border-box;
+        -webkit-mask: 
+            linear-gradient(#fff 0 0) padding-box, 
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    .glow-border:hover::before {
+        opacity: 1;
+    }
+    .wave-bg {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3e%3cpath fill='%23e0e7ff' fill-opacity='0.3' d='M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,208C960,213,1056,171,1152,144C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3e%3c/path%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: bottom;
+        background-size: cover;
+    }
+</style>
+</head>
+<body class="font-display bg-white text-dark-text">
+    <div class="relative w-full flex flex-col items-center">
+  
+      <header class="sticky top-0 z-50 w-full backdrop-blur-md bg-[#1E3A8A]/80 text-white shadow-sm border-b border-blue-700">
+        <div class="flex items-center justify-between w-full px-6 sm:px-10 py-3">
+  
+          <!-- Left: Logo + Title -->
+          <div class="flex items-center gap-3">
+            <div class="w-6 h-6 text-[#FACC15]">
+              <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path clip-rule="evenodd"
+                  d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z"
+                  fill-rule="evenodd"></path>
+              </svg>
+            </div>
+            <h2 class="text-white text-lg font-bold tracking-tight">ITSAR</h2>
+          </div>
+  
+          <!-- Right: Menu -->
+          <nav class="hidden md:flex items-center gap-8">
+            <a href="#about" class="text-white text-sm font-medium hover:text-[#FACC15] transition-colors">About</a>
+            <a href="#portfolio" class="text-white text-sm font-medium hover:text-[#FACC15] transition-colors">Leadership</a>
+            <a href="#smart-wheelchair" class="text-white text-sm font-medium hover:text-[#FACC15] transition-colors">Smart Wheelchair</a>
+            <a href="#ai-projects-extended" class="text-white text-sm font-medium hover:text-[#FACC15] transition-colors">Projects</a>
+            <a href="#chatbot" class="text-white text-sm font-medium hover:text-[#FACC15] transition-colors">Chatbot</a>
+            <a href="#startups" class="text-white text-sm font-medium hover:text-[#FACC15] transition-colors">Startups</a>
+            <a href="#contact" class="text-white text-sm font-medium hover:text-[#FACC15] transition-colors">Contact</a>
+          </nav>
+  
+          <!-- Mobile Button -->
+          <button id="menu-btn" class="md:hidden focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+  
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#1E3A8A]/95 backdrop-blur-lg border-t border-blue-700">
+          <div class="flex flex-col items-center py-4 space-y-4 text-sm font-medium">
+            <a href="#about" class="hover:text-[#FACC15]">About</a>
+            <a href="#portfolio" class="hover:text-[#FACC15]">Leadership</a>
+            <a href="#smart-wheelchair" class="hover:text-[#FACC15]">Smart Wheelchair</a>
+            <a href="#ai-projects-extended" class="hover:text-[#FACC15]">Project</a>
+            <a href="#chatbot" class="hover:text-[#FACC15]">Chatbot</a>
+            <a href="#startups" class="hover:text-[#FACC15]">Startups</a>
+            <a href="#contact" class="hover:text-[#FACC15]">Contact</a>
+          </div>
+        </div>
+      </header>
+<main class="w-full flex flex-col items-center">
+<div class="flex flex-col max-w-full w-full">
+<section class="w-full" id="hero" style="background-image: linear-gradient(180deg, #1E3A8A 0%, #3B82F6 100%);">
+<div class="py-10 max-w-7xl mx-auto px-4 sm:px-10">
+<div class="@container">
+<div class="@[480px]:p-4">
+<div class="flex min-h-[60vh] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-xl items-center justify-center p-4 text-center">
+<div class="flex flex-col gap-4">
+<h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-6xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]">
+                            Itsar Irsyada Surga
+                        </h1>
+<h2 class="text-white text-lg font-medium leading-normal @[480px]:text-xl @[480px]:font-medium @[480px]:leading-normal">
+                            AI Engineer &amp; Project Leader. Bridging the gap between innovative technology and strategic execution.
+                        </h2>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<a class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 @[480px]:h-12 @[480px]:px-6 bg-primary text-dark-blue text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] hover:opacity-90 transition-opacity" href="#ai-projects">
+<span class="truncate">View My Work</span>
+</a>
+<a class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 @[480px]:h-12 @[480px]:px-6 bg-primary text-dark-blue text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] hover:opacity-90 transition-opacity" href="#contact">
+<span class="truncate">Contact Me</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 sm:py-24 bg-off-white" id="about">
+<div class="max-w-7xl mx-auto px-4 sm:px-10">
+<h2 class="text-dark-text text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-8 text-center text-primary">About Me</h2>
+<div class="flex p-4 @container">
+<div class="flex w-full flex-col gap-8 @[768px]:flex-row @[768px]:justify-between @[768px]:items-center">
+<div class="flex justify-center @[768px]:w-1/3">
+<div class="bg-no-repeat bg-cover aspect-square rounded-full min-h-48 w-48 border-4 border-blue-900 shadow-lg" data-alt="Professional headshot of Itsar" style="background-image: url('JWL_7556 ITSAR (2).jpg'); background-position: center 30%;"></div>
+</div>
+<div class="flex flex-col justify-center gap-4 @[768px]:w-2/3">
+<p class="text-dark-text text-2xl font-bold leading-tight tracking-[-0.015em]">A Brief Introduction</p>
+<p class="text-gray-600 text-base font-normal leading-relaxed">
+                        I am a passionate AI Engineer and certified Project Manager with a proven track record of leading cross-functional teams to deliver cutting-edge technology solutions. My mission is to build intelligent systems that solve real-world problems and drive business value. With expertise in machine learning, IoT integration, and agile methodologies, I thrive on transforming complex challenges into elegant, effective products.
+                    </p>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-primary/20 text-primary text-sm font-bold leading-normal tracking-[0.015em] w-full max-w-xs hover:bg-primary/30 transition-colors">
+<span class="truncate">Download Resume</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="py-16 sm:py-24 bg-blue-50" id="portfolio">
+    <div class="max-w-7xl mx-auto px-4 sm:px-10">
+      <h2 class="text-dark-text text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-8 text-center">
+        Managerial Portfolio
+      </h2>
+  
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-4">
+        
+        <!-- Card 1 -->
+        <div class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-blue-300 transition-shadow">
+          <div class="h-40 bg-cover bg-center" style="background-image: url('./bimtek.png');"></div>
+          <div class="p-5 flex flex-col justify-between flex-grow">
+            <h3 class="text-xl font-bold text-blue-800 mb-1">Fasilitator Bimtek SmartSakip</h3>
+            <p class="text-gray-600 text-sm mb-3">Pendampingan implementasi aplikasi SmartSakip untuk Pemerintah Kota Bima, melatih ASN memahami integrasi kinerja dan data digital.</p>
+            <span class="text-xs font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded-full self-start">Kota Bima</span>
+          </div>
+        </div>
+  
+        <!-- Card 2 -->
+        <div class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-blue-300 transition-shadow">
+          <div class="h-40 bg-cover bg-center" style="background-image: url('./jombang.jpeg');"></div>
+          <div class="p-5 flex flex-col justify-between flex-grow">
+            <h3 class="text-xl font-bold text-blue-800 mb-1">Project Manager Aplikasi Sejati Guru</h3>
+            <p class="text-gray-600 text-sm mb-3">Mengelola pengembangan aplikasi peningkatan kompetensi guru untuk Dinas Pendidikan Kabupaten Jombang.</p>
+            <span class="text-xs font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded-full self-start">Kab. Jombang</span>
+          </div>
+        </div>
+  
+        <!-- Card 3 -->
+        <div class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-blue-300 transition-shadow">
+          <div class="h-40 bg-cover bg-center" style="background-image: url('./berau.jpeg');"></div>
+          <div class="p-5 flex flex-col justify-between flex-grow">
+            <h3 class="text-xl font-bold text-blue-800 mb-1">Project Manager SPBE</h3>
+            <p class="text-gray-600 text-sm mb-3">Memimpin penyusunan proses bisnis SPBE untuk Dinas Kominfo Kabupaten Berau, dengan fokus pada efisiensi dan interoperabilitas layanan publik.</p>
+            <span class="text-xs font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded-full self-start">Kab. Berau</span>
+          </div>
+        </div>
+  
+        <!-- Card 4 -->
+        <div class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-blue-300 transition-shadow">
+          <div class="h-40 bg-cover bg-center" style="background-image: url('./smartid.jpeg');background-position: center 100%" ></div>
+          <div class="p-5 flex flex-col justify-between flex-grow">
+            <h3 class="text-xl font-bold text-blue-800 mb-1">Manager IT SmartID</h3>
+            <p class="text-gray-600 text-sm mb-3">Mengelola tim pengembang SmartID, platform digital pelayanan publik dan integrasi data nasional berbasis AI.</p>
+            <span class="text-xs font-medium bg-blue-100 text-blue-700 px-2 py-1 rounded-full self-start">SmartID</span>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </section>
+  <section class="py-20 bg-gradient-to-br from-blue-900 via-blue-700 to-blue-500 text-white" id="smart-wheelchair">
+    <div class="max-w-6xl mx-auto px-4 sm:px-10 flex flex-col md:flex-row items-center gap-10">
+      
+      <!-- Video -->
+      <div class="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-lg">
+        <video class="w-full h-auto rounded-2xl" autoplay muted loop controls>
+          <source src="./ujian bismillah.mp4" type="video/mp4" />
+          Browser Anda tidak mendukung video.
+        </video>
+      </div>
+  
+      <!-- Text -->
+      <div class="w-full md:w-1/2">
+        <h2 class="text-3xl font-bold mb-4">Smart Wheelchair with MobileViT-S</h2>
+        <p class="text-blue-100 text-sm mb-4 leading-relaxed">
+          Sistem kursi roda pintar berbasis <strong>MobileViT-S</strong> yang mampu mengenali rintangan 
+          dan mengarahkan kursi roda secara otonom. Proyek ini menggabungkan visi komputer, 
+          edge AI, dan sistem aktuator cerdas untuk membantu penyandang disabilitas bergerak mandiri.
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="bg-blue-200/20 text-white text-xs font-medium px-2 py-1 rounded-full border border-blue-200/30">MobileViT-S</span>
+          <span class="bg-blue-200/20 text-white text-xs font-medium px-2 py-1 rounded-full border border-blue-200/30">Edge AI</span>
+          <span class="bg-blue-200/20 text-white text-xs font-medium px-2 py-1 rounded-full border border-blue-200/30">Computer Vision</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="py-16 sm:py-24 bg-blue-50" id="ai-projects-extended">
+    <div class="max-w-7xl mx-auto px-4 sm:px-10">
+      <h2 class="text-dark-text text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-8 text-center">
+        Projects
+      </h2>
+  
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
+  
+        <!-- Project 2 -->
+        <div class="flex flex-col bg-white rounded-lg overflow-hidden shadow-md hover:shadow-blue-300 transition-shadow">
+          <img class="w-full h-48 object-cover" src="./images/mobilevit-fastapi.jpg" alt="MobileVitS with FastAPI">
+          <div class="p-6 flex flex-col flex-grow">
+            <h3 class="text-xl font-bold text-blue-800 mb-1">MobileViT-S + FastAPI</h3>
+            <p class="text-gray-600 text-sm mb-4 flex-grow">
+              Deploy model MobileViT-S untuk deteksi objek real-time melalui FastAPI dengan arsitektur modular, mendukung endpoint inferensi ringan untuk edge device.
+            </p>
+            <a href="https://demo-yourlink.com" target="_blank" class="text-blue-700 text-sm font-medium underline hover:text-blue-500">🔗 View Demo</a>
+          </div>
+        </div>
+  
+        <!-- Project 3 -->
+        <div class="flex flex-col bg-white rounded-lg overflow-hidden shadow-md hover:shadow-blue-300 transition-shadow">
+          <img class="w-full h-48 object-cover" src="./sismed.png" alt="RR Interval Neural Network">
+          <div class="p-6 flex flex-col flex-grow">
+            <h3 class="text-xl font-bold text-blue-800 mb-1">RR-Interval Neural Analysis</h3>
+            <p class="text-gray-600 text-sm mb-4 flex-grow">
+              Menggunakan Neural Network untuk menganalisis variabilitas RR-Interval guna mendeteksi potensi gangguan jantung dini secara non-invasif.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">Neural Network</span>
+              <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">ECG Data</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Project 4 -->
+        <div class="flex flex-col bg-white rounded-lg overflow-hidden shadow-md hover:shadow-blue-300 transition-shadow">
+          <img class="w-full h-48 object-cover" src="./usman.jpg" alt="USMAN UMKM App">
+          <div class="p-6 flex flex-col flex-grow">
+            <h3 class="text-xl font-bold text-blue-800 mb-1">USMAN – UMKM Smart Assistant</h3>
+            <p class="text-gray-600 text-sm mb-4 flex-grow">
+              Ketua tim lomba MTQMN 2023 – Aplikasi pendamping UMKM berbasis AI yang membantu pelaku usaha mengelola pencatatan, rekomendasi harga, dan branding digital.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">Android</span>
+              <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">AI Assistant</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Project 5 -->
+        <div class="flex flex-col bg-white rounded-lg overflow-hidden shadow-md hover:shadow-blue-300 transition-shadow">
+            <video class="w-full h-auto rounded-2xl" autoplay muted loop controls>
+                <source src="https://www.youtube.com/watch?v=alXOEb2G0DE" type="video/mp4" />
+                Browser Anda tidak mendukung video.
+              </video>
+          <div class="p-6 flex flex-col flex-grow">
+            <h3 class="text-xl font-bold text-blue-800 mb-1">DetaQ – IoT Heart Detector</h3>
+            <p class="text-gray-600 text-sm mb-4 flex-grow">
+              Proyek IoT lomba GDSC 2023 Universitas Brawijaya. Sistem wearable dengan sensor denyut jantung dan transmisi data real-time untuk monitoring kesehatan.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">IoT</span>
+              <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full">GDSC 2023</span>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+  </section>
+  
+<section class="py-16 sm:py-24 bg-white wave-bg" id="chatbot">
+<div class="max-w-7xl mx-auto px-4 sm:px-10">
+<h2 class="text-dark-text text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-8 text-center">Ask Itsar</h2>
+<div class="max-w-2xl mx-auto p-4">
+<div class="flex flex-col h-[500px] bg-white rounded-lg border border-blue-200 shadow-lg shadow-blue-500/20">
+<div class="flex-grow p-4 space-y-4 overflow-y-auto">
+<div class="flex items-start gap-3">
+<div class="size-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">AI</div>
+<div class="bg-blue-100 text-dark-text p-3 rounded-lg max-w-xs">Hello! Ask me anything about my skills, projects, or experience.</div>
+</div>
+</div>
+<div class="p-4 border-t border-blue-200">
+<div class="flex items-center gap-2">
+    <input id="chat-input" class="flex-grow bg-gray-100 border border-gray-300 rounded-full h-12 px-4 text-dark-text focus:ring-blue-500 focus:border-blue-500" placeholder="Type your question..." type="text"/>
+    <button id="send-btn" class="flex items-center justify-center size-12 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+      <span class="material-symbols-outlined" data-icon="send">send</span>
+    </button>
+    
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="startups" class="py-20 bg-gradient-to-b from-white to-indigo-50">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-10">
+    
+    <!-- Bagian Kiri: Logo & Deskripsi -->
+    <div class="flex-1 text-center lg:text-left">
+      <img src="hero_academy_logo.png" alt="Logo Hero Academy" class="w-32 h-32 mx-auto lg:mx-0 mb-6">
+      <h2 class="text-3xl font-bold text-gray-800 mb-3">Hero Academy</h2>
+      <p class="text-gray-600 leading-relaxed mb-6">
+        Hero Academy adalah inisiatif pembelajaran adaptif berbasis <strong>AI dan Drone</strong> yang mendorong generasi muda menjadi <em>pahlawan solusi</em> di bidang teknologi, sosial, dan lingkungan. 
+        Melalui program SmartCamp dan riset terapan, kami membantu siswa dan pemuda mengubah ide menjadi inovasi nyata.
+      </p>
+      <a href="https://instagram.com/heroacademy.id" target="_blank"
+         class="inline-flex items-center gap-2 bg-blue-600 text-white font-medium px-5 py-2.5 rounded-full hover:bg-blue-700 transition-colors">
+        <span class="material-symbols-outlined text-white text-lg">photo_camera</span>
+        Lihat di Instagram
+      </a>
+    </div>
+
+    <!-- Bagian Kanan: Gambar -->
+    <div class="flex-1">
+      <div class="rounded-xl overflow-hidden shadow-lg border-4 border-blue-500/20 hover:border-blue-500 transition-all duration-300">
+        <img src="hero_activity.jpg" alt="Kegiatan Hero Academy" class="w-full h-72 object-cover">
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="py-16 sm:py-24 bg-dark-blue" id="contact">
+<div class="max-w-7xl mx-auto px-4 sm:px-10">
+<div class="text-center">
+<h2 class="text-light-text text-3xl font-bold leading-tight tracking-[-0.015em] px-4 pb-4">Let's Connect</h2>
+<p class="text-gray-300 mb-8">Have a project in mind or want to discuss technology? Feel free to reach out.</p>
+</div>
+<div class="max-w-2xl mx-auto p-4 bg-blue-900/40 rounded-lg border border-primary/20">
+<form class="space-y-6">
+<div>
+<label class="text-light-text text-sm font-medium sr-only" for="name">Name</label>
+<input class="w-full bg-blue-900/50 border border-primary/30 rounded-lg h-12 px-4 text-light-text focus:ring-primary focus:border-primary placeholder-gray-400" id="name" name="name" placeholder="Your Name" type="text"/>
+</div>
+<div>
+<label class="text-light-text text-sm font-medium sr-only" for="email">Email</label>
+<input class="w-full bg-blue-900/50 border border-primary/30 rounded-lg h-12 px-4 text-light-text focus:ring-primary focus:border-primary placeholder-gray-400" id="email" name="email" placeholder="Your Email" type="email"/>
+</div>
+<div>
+<label class="text-light-text text-sm font-medium sr-only" for="message">Message</label>
+<textarea class="w-full bg-blue-900/50 border border-primary/30 rounded-lg p-4 text-light-text focus:ring-primary focus:border-primary placeholder-gray-400" id="message" name="message" placeholder="Your Message" rows="4"></textarea>
+</div>
+<button class="w-full flex items-center justify-center rounded-full h-12 px-6 bg-primary text-dark-blue text-base font-bold hover:opacity-90 transition-opacity" type="submit">
+<span class="truncate">Submit</span>
+</button>
+</form>
+</div>
+<div class="flex justify-center gap-6 mt-12">
+<a class="text-gray-400 hover:text-primary transition-colors" data-alt="LinkedIn Profile" href="#">
+<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+</a>
+<a class="text-gray-400 hover:text-primary transition-colors" data-alt="GitHub Profile" href="#">
+<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg>
+</a>
+<a class="text-gray-400 hover:text-primary transition-colors" data-alt="Medium Profile" href="#">
+<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13.54,12c0,0,1.38,6,2,9.33c0.16,0.89-0.55,1.67-1.44,1.67h-7c-0.89,0-1.6-0.78-1.44-1.67C6.17,18,7.54,12,7.54,12s-1.33-5.28-1.77-7.29C5.61,3.82,6.23,3,7.12,3h8.75c0.89,0,1.51,0.82,1.35,1.71C14.88,6.72,13.54,12,13.54,12z M20.5,3h-2.5c-0.83,0-1.5,0.67-1.5,1.5v15c0,0.83,0.67,1.5,1.5,1.5h2.5c0.83,0,1.5-0.67,1.5-1.5v-15C22,3.67,21.33,3,20.5,3z M3.5,3H6C6.83,3,7.5,3.67,7.5,4.5v15c0,0.83-0.67,1.5-1.5,1.5H3.5C2.67,21,2,20.33,2,19.5v-15C2,3.67,2.67,3,3.5,3z"></path></svg>
+</a>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="w-full bg-navy py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-10 text-center">
+<p class="text-gray-400 text-sm">© 2024 Itsar Irsyada Surga. All rights reserved.</p>
+</div>
+</footer>
+</div>
+<script>
+    const input = document.querySelector('#chat-input');
+    const sendBtn = document.querySelector('#send-btn');
+    const chatBox = document.querySelector('#chat-box');
+    
+    async function sendMessage() {
+      const msg = input.value.trim();
+      if (!msg) return;
+    
+      // tampilkan pesan user
+      const userBubble = `
+        <div class="flex items-start justify-end gap-3">
+          <div class="bg-blue-600 text-white p-3 rounded-lg max-w-xs">${msg}</div>
+          <div class="size-8 rounded-full bg-blue-300 flex items-center justify-center text-white font-bold text-sm">You</div>
+        </div>`;
+      chatBox.innerHTML += userBubble;
+      input.value = "";
+    
+      // kirim ke FastAPI
+      try {
+        const res = await fetch("http://127.0.0.1:8000/chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+    
+        // tampilkan respon AI
+        const aiBubble = `
+          <div class="flex items-start gap-3">
+            <div class="size-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">AI</div>
+            <div class="bg-blue-100 text-dark-text p-3 rounded-lg max-w-xs">${data.response}</div>
+          </div>`;
+        chatBox.innerHTML += aiBubble;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    
+    // event listener
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+    </script>
+    
+</body></html>
