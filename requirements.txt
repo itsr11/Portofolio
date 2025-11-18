@@ -1,4 +1,6 @@
-streamlit
+fastapi
+uvicorn
 numpy
-Pillow
-onnxruntime-web
+pillow
+onnxruntime
+python-multipart
