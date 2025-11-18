@@ -1,16 +1,23 @@
-import streamlit as st
 import io
+import os
 import numpy as np
-import onnxruntime_web as ort
+import onnxruntime as ort
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import JSONResponse
 from PIL import Image
+import uvicorn
 
-# === Load model ONNX ===
+app = FastAPI(
+    title="MobileViT Object Detection API (CPU)",
+    description="Deteksi permukaan jalan menggunakan MobileViT (ONNX, CPU only)",
+    version="1.0"
+)
+
 onnx_model_path = "model1.onnx"
 session = ort.InferenceSession(onnx_model_path, providers=['CPUExecutionProvider'])
 
 classes = ["bump", "lantai", "paving", "tangga"]
 confidence_threshold = 0.3
-
 
 def preprocess_image(image: Image.Image):
     image = image.convert("RGB")
@@ -20,7 +27,6 @@ def preprocess_image(image: Image.Image):
     input_tensor = np.expand_dims(img_array, axis=0)
     return input_tensor
 
-
 def predict(image_tensor):
     inputs = {session.get_inputs()[0].name: image_tensor}
     outputs = session.run(None, inputs)
@@ -29,26 +35,28 @@ def predict(image_tensor):
     confidence = float(np.max(probabilities))
     return pred_class, confidence
 
+@app.post("/predict")
+async def predict_image(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        image = Image.open(io.BytesIO(contents))
+        image_tensor = preprocess_image(image)
+        pred_class, confidence = predict(image_tensor)
 
-# === STREAMLIT UI ===
-st.title("MobileViT Surface Detection (ONNX / Streamlit)")
+        if confidence < confidence_threshold:
+            result = {"class": "Unknown", "confidence": round(confidence, 4)}
+        else:
+            result = {"class": classes[pred_class], "confidence": round(confidence, 4)}
 
-uploaded_file = st.file_uploader("Upload an Image", type=["jpg", "jpeg", "png"])
+        return JSONResponse(content=result)
 
-if uploaded_file is not None:
-    image = Image.open(uploaded_file)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
 
-    # Preprocess
-    image_tensor = preprocess_image(image)
+@app.get("/")
+def root():
+    return {"message": "MobileViT Object Detection API is running!"}
 
-    # Predict
-    pred_class, confidence = predict(image_tensor)
-
-    # Output
-    if confidence < confidence_threshold:
-        st.warning(f"Class: Unknown (conf={confidence:.4f})")
-    else:
-        st.success(f"Detected: {classes[pred_class]} (conf={confidence:.4f})")
-
-
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
