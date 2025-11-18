@@ -1,7 +1,7 @@
 import streamlit as st
 import io
 import numpy as np
-import onnxruntime_lite as ort
+import onnxruntime_web as ort
 from PIL import Image
 
 # === Load model ONNX ===
@@ -50,4 +50,5 @@ if uploaded_file is not None:
         st.warning(f"Class: Unknown (conf={confidence:.4f})")
     else:
         st.success(f"Detected: {classes[pred_class]} (conf={confidence:.4f})")
+
 
