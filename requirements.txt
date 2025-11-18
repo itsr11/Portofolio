@@ -1,4 +1,4 @@
 streamlit
 numpy
 Pillow
-onnxruntime-lite
+onnxruntime-web
