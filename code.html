@@ -246,6 +246,52 @@
       </div>
     </div>
   </section>
+
+<section class="py-20 bg-gradient-to-br from-blue-50 via-white to-blue-100" id="image-detection">
+  <div class="max-w-6xl mx-auto px-4 sm:px-10">
+    
+    <!-- Title -->
+    <h2 class="text-3xl font-bold text-center text-blue-900 mb-10">
+      Try the AI Model — Image Detection Demo
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+
+      <!-- Upload Area -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg border border-blue-200">
+        <h3 class="text-xl font-semibold text-blue-800 mb-4">Upload an Image</h3>
+
+        <input 
+          id="imageInput" 
+          type="file" 
+          accept="image/*"
+          class="w-full border border-blue-300 rounded-lg p-3 mb-4 cursor-pointer"
+        />
+
+        <div id="preview" class="hidden mt-4">
+          <p class="text-blue-800 font-medium mb-2">Preview:</p>
+          <img id="previewImg" class="rounded-xl shadow-md" />
+        </div>
+
+        <button 
+          onclick="analyzeImage()"
+          class="mt-5 w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 rounded-xl transition">
+          Analyze Image
+        </button>
+      </div>
+
+      <!-- Result -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg border border-blue-200">
+        <h3 class="text-xl font-semibold text-blue-800 mb-4">Result</h3>
+        <pre id="resultBox" 
+             class="bg-blue-50 p-4 rounded-xl text-sm text-blue-900 h-64 overflow-y-auto">
+No results yet. Upload and analyze an image.
+        </pre>
+      </div>
+
+    </div>
+  </div>
+</section>
   
   <section class="py-16 sm:py-24 bg-blue-50" id="ai-projects-extended">
     <div class="max-w-7xl mx-auto px-4 sm:px-10">
@@ -467,5 +513,46 @@
       if (e.key === 'Enter') sendMessage();
     });
     </script>
-    
+    <script>
+  // Preview Image
+  const imageInput = document.getElementById("imageInput");
+  const preview = document.getElementById("preview");
+  const previewImg = document.getElementById("previewImg");
+
+  imageInput.addEventListener("change", () => {
+    const file = imageInput.files[0];
+    if (file) {
+      preview.classList.remove("hidden");
+      previewImg.src = URL.createObjectURL(file);
+    }
+  });
+
+  // Analyze with FastAPI
+  async function analyzeImage() {
+    const file = imageInput.files[0];
+    if (!file) {
+      alert("Please upload an image first!");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    document.getElementById("resultBox").textContent = "Analyzing... Please wait.";
+
+    try {
+      const response = await fetch("https://YOUR-VPS-IP/analyze", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      document.getElementById("resultBox").textContent = JSON.stringify(data, null, 2);
+
+    } catch (err) {
+      document.getElementById("resultBox").textContent = 
+        "Error: Could not connect to AI API.\n" + err;
+    }
+  }
+</script>
 </body></html>
