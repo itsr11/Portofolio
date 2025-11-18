@@ -14,7 +14,7 @@ app = FastAPI(
 )
 
 # === Load Model ONNX (CPU Only) ===
-onnx_model_path = "D:/datasetitsar/model/model11/model1.onnx"
+onnx_model_path = "model1.onnx"
 session = ort.InferenceSession(onnx_model_path, providers=['CPUExecutionProvider'])
 print("✅ Model loaded on CPU. Execution Providers:", session.get_providers())
 
@@ -77,3 +77,4 @@ def root():
 # === Jalankan server ===
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
