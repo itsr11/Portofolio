@@ -1,0 +1,18 @@
+from fastapi import FastAPI, Query
+from app.rag_engine import RAGEngine
+import uvicorn
+
+app = FastAPI(title="Itsar RAG Chatbot API", version="1.0")
+rag = RAGEngine()
+
+@app.get("/")
+def root():
+    return {"message": "Itsar RAG Chatbot aktif!"}
+
+@app.get("/ask")
+def ask(query: str = Query(..., description="Pertanyaan pengguna")):
+    """Endpoint RAG: menerima pertanyaan dan mengembalikan jawaban"""
+    answer = rag.generate_response(query)
+    return {"query": query, "answer": answer}
+if __name__ == "__main__":
+    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=True)
