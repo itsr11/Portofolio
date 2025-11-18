@@ -1,80 +1,52 @@
+import streamlit as st
 import io
 import numpy as np
 import onnxruntime as ort
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import JSONResponse
 from PIL import Image
-import uvicorn
 
-# === Inisialisasi FastAPI ===
-app = FastAPI(
-    title="MobileViT Object Detection API (CPU)",
-    description="Deteksi permukaan jalan menggunakan MobileViT (ONNX, CPU only)",
-    version="1.0"
-)
-
-# === Load Model ONNX (CPU Only) ===
+# === Load model ONNX ===
 onnx_model_path = "model1.onnx"
 session = ort.InferenceSession(onnx_model_path, providers=['CPUExecutionProvider'])
-print("✅ Model loaded on CPU. Execution Providers:", session.get_providers())
 
-# === Daftar kelas ===
 classes = ["bump", "lantai", "paving", "tangga"]
-confidence_threshold = 0.3  # Minimum probabilitas agar deteksi diterima
+confidence_threshold = 0.3
 
-# === Fungsi preprocessing ===
+
 def preprocess_image(image: Image.Image):
-    """
-    Mengubah gambar menjadi tensor sesuai input model (NCHW format, float32, normalisasi 0–1).
-    """
     image = image.convert("RGB")
     resized = image.resize((256, 256))
     img_array = np.array(resized).astype(np.float32) / 255.0
-    img_array = np.transpose(img_array, (2, 0, 1))  # HWC -> CHW
-    input_tensor = np.expand_dims(img_array, axis=0)  # Tambahkan dimensi batch
+    img_array = np.transpose(img_array, (2, 0, 1))
+    input_tensor = np.expand_dims(img_array, axis=0)
     return input_tensor
 
-# === Fungsi prediksi ===
+
 def predict(image_tensor):
-    """
-    Jalankan inferensi ONNX Runtime pada tensor input.
-    """
     inputs = {session.get_inputs()[0].name: image_tensor}
     outputs = session.run(None, inputs)
-    probabilities = outputs[0]  # Output model (probabilitas per kelas)
+    probabilities = outputs[0]
     pred_class = int(np.argmax(probabilities))
     confidence = float(np.max(probabilities))
     return pred_class, confidence
 
-# === Endpoint untuk prediksi gambar ===
-@app.post("/predict")
-async def predict_image(file: UploadFile = File(...)):
-    try:
-        # Membaca file gambar dari request
-        contents = await file.read()
-        image = Image.open(io.BytesIO(contents))
 
-        # Preprocess dan inferensi
-        image_tensor = preprocess_image(image)
-        pred_class, confidence = predict(image_tensor)
+# === STREAMLIT UI ===
+st.title("MobileViT Surface Detection (ONNX / Streamlit)")
 
-        # Hasil
-        if confidence < confidence_threshold:
-            result = {"class": "Unknown", "confidence": round(confidence, 4)}
-        else:
-            result = {"class": classes[pred_class], "confidence": round(confidence, 4)}
+uploaded_file = st.file_uploader("Upload an Image", type=["jpg", "jpeg", "png"])
 
-        return JSONResponse(content=result)
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
 
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
+    # Preprocess
+    image_tensor = preprocess_image(image)
 
-# === Endpoint root ===
-@app.get("/")
-def root():
-    return {"message": "MobileViT Object Detection API (CPU) is running!"}
+    # Predict
+    pred_class, confidence = predict(image_tensor)
 
-# === Jalankan server ===
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
+    # Output
+    if confidence < confidence_threshold:
+        st.warning(f"Class: Unknown (conf={confidence:.4f})")
+    else:
+        st.success(f"Detected: {classes[pred_class]} (conf={confidence:.4f})")
