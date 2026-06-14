@@ -1,0 +1,2 @@
+# Serve code.html as the directory index
+DirectoryIndex code.html
