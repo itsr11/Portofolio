@@ -95,7 +95,7 @@ def chatbot(request: ChatRequest):
         response = (
             "Anda dapat menghubungi Itsar secara langsung melalui:\n\n"
             "• Email: itsar@futurehero.id\n"
-            "• LinkedIn: linkedin.com/in/itsar\n"
+            "• LinkedIn: linkedin.com/in/itsar-irsyada-surga-036b69162/\n"
             "• GitHub: github.com/itsr11"
         )
     elif any(keyword in msg_lower for keyword in ["timeline", "pengalaman", "kerja", "organisasi", "smart id", "hero academy", "filkom"]):
