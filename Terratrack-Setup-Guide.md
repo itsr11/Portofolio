@@ -1,157 +1,135 @@
-# Panduan Setup Laravel Multi-Project: `itsar.futurehero.id/Terratrack`
+# Panduan Setup & Deployment Terratrack di Server Hostinger
 
-Panduan ini menjelaskan arsitektur folder, konfigurasi `.env`, penyesuaian routing, dan settingan `.htaccess` untuk menjalankan project Laravel baru bernama **Terratrack** di dalam subfolder dari subdomain utama Anda.
+Panduan ini menjelaskan langkah-langkah untuk melakukan deployment **Terratrack** pada server production Hostinger dengan domain **`https://itsar.futurehero.id/teratrack`**.
 
----
-
-## 1. Arsitektur Folder yang Aman (Best Practice)
-
-Untuk menjaga keamanan, Anda tidak boleh meletakkan seluruh source code Laravel di dalam folder publik `public_html`. Kita akan memisahkan **Core Code** (di luar akses publik) dan **Public Assets** (di dalam akses publik).
-
-### Struktur Folder pada Hosting (`/home/u691050390/`):
-```
-/home/u691050390/
-├── project_sources/
-│   └── Terratrack/                  <-- Core Code Laravel (git clone / upload di sini)
-│       ├── app/
-│       ├── bootstrap/
-│       ├── config/
-│       ├── database/
-│       ├── ... (seluruh folder core)
-│       └── public/                  <-- Folder public asli
-│
-└── domains/
-    └── futurehero.id/
-        └── public_html/
-            └── itsar/               <-- Subdomain itsar.futurehero.id
-                ├── code.html        <-- Landing Page Portofolio Utama
-                ├── .htaccess        <-- HTAccess Subdomain Utama
-                └── Terratrack/      <-- Jembatan Link Publik (Symlink ke core public)
-```
+Untuk menjaga keamanan core engine Laravel, kita akan meletakkan file source code di luar direktori publik (`project_sources`) dan membuat tautan simbolik (symlink) dari `public_html`.
 
 ---
 
-## 2. Langkah Setup & Deployment
+## Langkah 1: Konek ke Server via SSH
+Sebelum melakukan operasi Git di server, Anda harus masuk ke terminal server Hostinger.
 
-### Langkah 1: Upload / Clone Core Code
-Upload zip project Laravel Anda atau lakukan `git clone` ke dalam folder `/home/u691050390/project_sources/Terratrack/`.
+1. Buka dashboard Hostinger, cari menu **Advanced > SSH Access**.
+2. Pastikan status SSH adalah **Enabled**.
+3. Salin perintah **SSH Command** yang disediakan (contoh: `ssh username@ip_address -p port`).
+4. Buka Terminal (Mac/Linux) atau Git Bash/PowerShell (Windows), paste perintah tersebut, lalu masukkan password SSH hosting Anda.
 
-### Langkah 2: Buat Symlink Publik
-Untuk menghubungkan folder publik subdomain dengan folder public core Laravel, jalankan perintah ini melalui terminal SSH:
+---
+
+## Langkah 2: Setup SSH Key di Server (Akses ke GitHub)
+Agar server Hostinger Anda bisa melakukan `git pull` dari private repository GitHub tanpa terus-menerus meminta password, daftarkan SSH Key server ke GitHub.
+
+1. **Generate SSH Key baru di server:**
+   Jalankan perintah ini di dalam terminal SSH Hostinger (tekan Enter saja jika ada pertanyaan/passphrase):
+   ```bash
+   ssh-keygen -t ed25519 -C "server-hostinger"
+   ```
+2. **Ambil public key yang baru dibuat:**
+   ```bash
+   cat ~/.ssh/id_ed25519.pub
+   ```
+3. Salin seluruh teks yang muncul (dimulai dari `ssh-ed25519 ...`).
+4. **Daftarkan ke GitHub:**
+   * Buka GitHub repository Terratrack Anda (`https://github.com/itsr11/TerraTrack`).
+   * Pergi ke **Settings > Deploy keys > Add deploy key**.
+   * Paste key tadi ke kolom **Key**, beri nama (misal: *Hostinger Production*), dan klik **Add key**.
+
+---
+
+## Langkah 3: Clone / Pull Pertama Kali ke `project_sources`
+Kita akan meletakkan core engine Terratrack di luar direktori `public_html` agar file sistem Laravel tidak dapat diakses langsung oleh publik.
+
+1. **Masuk ke direktori domain Anda:**
+   Biasanya di Hostinger strukturnya adalah `domains/futurehero.id/`. Buat folder `project_sources` di sana:
+   ```bash
+   cd ~/domains/futurehero.id/
+   mkdir -p project_sources
+   cd project_sources
+   ```
+2. **Clone repository Terratrack menggunakan SSH URL:**
+   ```bash
+   git clone git@github.com:itsr11/TerraTrack.git terratrack
+   ```
+
+---
+
+## Langkah 4: Setup Environment & Symlink Publik
+Kita perlu menghubungkan folder `public` milik Terratrack ke folder `public_html/itsar/teratrack` agar dapat diakses oleh browser.
+
+1. **Setup File `.env` Produksi:**
+   ```bash
+   cd ~/domains/futurehero.id/project_sources/teratrack
+   cp .env.example .env
+   nano .env
+   ```
+   Sesuaikan konfigurasi berikut di dalam `.env`:
+   ```env
+   APP_NAME=Terratrack
+   APP_ENV=production
+   APP_DEBUG=false
+   APP_URL=https://itsar.futurehero.id/teratrack
+
+   DB_CONNECTION=sqlite
+   
+   # Isolasi Cookie Sesi agar tidak konflik di subdomain
+   SESSION_COOKIE=terratrack_session
+   SESSION_PATH=/terratrack
+   ```
+   *Tekan `CTRL+X`, lalu `Y`, lalu `Enter` untuk menyimpan.*
+
+2. **Install Dependencies & Generate Key:**
+   ```bash
+   # Pasang package production
+   composer install --no-dev --optimize-autoloader
+   
+   # Hasilkan security key
+   php artisan key:generate
+   
+   # Buat file database SQLite kosong
+   touch database/database.sqlite
+   
+   # Jalankan migrasi dan seeder database
+   php artisan migrate --seed --force
+   ```
+
+3. **Hubungkan ke folder publik (`public_html`):**
+   Gunakan Symlink agar folder `public_html/itsar/teratrack` langsung membaca folder `public` di core source code kita:
+   ```bash
+   # Pastikan folder tujuan symlink belum dibuat sebelumnya
+   rm -rf ~/domains/futurehero.id/public_html/itsar/teratrack
+   
+   # Jalankan pembuatan symlink
+   ln -s ~/domains/futurehero.id/project_sources/teratrack/public ~/domains/futurehero.id/public_html/itsar/teratrack
+   ```
+
+4. **Set Izin Akses SQLite (Kritis):**
+   Agar database SQLite dapat ditulis oleh web server saat ada transaksi presence check-in & quiz:
+   ```bash
+   chmod -R 775 database
+   chmod 664 database/database.sqlite
+   
+   # Berikan hak akses write ke folder storage & cache
+   chmod -R 775 storage bootstrap/cache
+   ```
+
+---
+
+## Langkah 5: Alur Kerja Setiap Kali Ada Update (Workflow Rutin)
+Setiap kali Anda melakukan perubahan kode di komputer lokal, lakukan `git push` ke GitHub seperti biasa. Untuk memperbarui kode di server production Hostinger, jalankan perintah berikut via SSH:
+
 ```bash
-ln -s /home/u691050390/project_sources/Terratrack/public /home/u691050390/domains/futurehero.id/public_html/itsar/Terratrack
-```
-*Catatan: Jika folder `Terratrack` kosong sudah terlanjur dibuat di dalam `public_html/itsar/`, hapus terlebih dahulu folder kosong tersebut sebelum menjalankan perintah symlink di atas.*
+# 1. Masuk ke folder project
+cd ~/domains/futurehero.id/project_sources/terratrack
 
-### Langkah 3: Konfigurasi File `.env` (`/project_sources/Terratrack/.env`)
-Buka file `.env` di dalam folder core Terratrack, lalu sesuaikan konfigurasi berikut:
+# 2. Tarik kode terbaru dari GitHub
+git pull origin main
 
-```env
-# 1. Pastikan URL mengarah ke subfolder secara lengkap
-APP_URL=https://itsar.futurehero.id/Terratrack
-
-# 2. Isolasi Database
-DB_DATABASE=u691050390_terratrack
-DB_USERNAME=u691050390_terratrack_user
-DB_PASSWORD=password_database_anda
-
-# 3. Mencegah Konflik Session Cookie dengan Project Lain
-SESSION_COOKIE=terratrack_session
-```
-
----
-
-## 3. Konfigurasi Server & Routing
-
-### A. File `.htaccess` Project Terratrack
-Buat atau edit file `.htaccess` di dalam `/home/u691050390/project_sources/Terratrack/public/.htaccess` (yang sekarang ter-link di `public_html/itsar/Terratrack/`):
-
-```apache
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    
-    # Sesuaikan Base Path dengan nama subfolder
-    RewriteBase /Terratrack/
-
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Handle Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
-</IfModule>
-```
-
-### B. Asset Routing dalam Blade Template
-Pastikan penulisan link assets di template Laravel Blade Anda selalu menggunakan helper `asset()` agar dinamis mengarah ke subfolder:
-```html
-<!-- BENAR (Otomatis menghasilkan https://itsar.futurehero.id/Terratrack/css/app.css) -->
-<link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
-<!-- SALAH (Akan menembak root domain: https://itsar.futurehero.id/css/app.css) -->
-<link rel="stylesheet" href="/css/app.css">
-```
-
-### C. Konfigurasi Livewire (Jika menggunakan TALL Stack)
-Agar request AJAX Livewire tidak menembak root domain utama (`itsar.futurehero.id/livewire/...`), daftarkan custom route Livewire di file `app/Providers/AppServiceProvider.php` project Terratrack Anda:
-
-```php
-<?php
-
-namespace App\Providers;
-
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
-
-class AppServiceProvider extends ServiceProvider
-{
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        // Jalankan ini agar Livewire memproses request di subfolder /Terratrack/
-        if (class_exists(\Livewire\Livewire::class)) {
-            \Livewire\Livewire::setUpdateRoute(function ($handle) {
-                return Route::post('/Terratrack/livewire/update', $handle);
-            });
-            \Livewire\Livewire::setScriptRoute(function ($handle) {
-                return Route::get('/Terratrack/livewire/livewire.js', $handle);
-            });
-        }
-    }
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        //
-    }
-}
-```
-
----
-
-## 4. Perintah Tambahan di Server (SSH)
-
-Setelah file terpasang dan database dikonfigurasi, jalankan perintah optimasi Laravel dari folder core (`/home/u691050390/project_sources/Terratrack/`):
-```bash
-# Pindah ke directory project core
-cd /home/u691050390/project_sources/Terratrack
-
-# Install dependensi PHP (jika belum dilakukan)
-composer install --no-dev --optimize-autoloader
-
-# Jalankan database migration
-php artisan migrate --force
-
-# Bersihkan dan optimalkan cache config/routing
+# 3. Jalankan migrasi dan optimasi cache Laravel
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+php artisan migrate --force
+
+# 4. Pastikan permission database tetap aman
+chmod 664 database/database.sqlite
 ```
-Panduan ini siap digunakan untuk mendokumentasikan deployment proyek baru Anda.
