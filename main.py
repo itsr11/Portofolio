@@ -87,9 +87,11 @@ def chatbot(request: ChatRequest):
     elif any(keyword in msg_lower for keyword in ["project", "proyek", "karya", "portfolio"]):
         response = (
             "Beberapa proyek unggulan Itsar antara lain:\n\n"
-            "1. Smart Wheelchair (Deep Tech): Navigasi otonom menggunakan MobileViT-S di NVIDIA Jetson.\n"
-            "2. FieldPace / GeoSquad (HR Tech): Platform HR lapangan berbasis Laravel TALL Stack dengan formula Haversine & offline caching.\n"
-            "3. USMAN (UMKM Assistant): Asisten bisnis cerdas berbasis AI untuk UMKM (Juara Nasional MTQMN 2023)."
+            "1. Smart Wheelchair (Deep Tech): Navigasi otonom menggunakan MobileViT-S di NVIDIA Jetson Nano.\n"
+            "2. TerraTrack (HR Tech): Platform HR lapangan berbasis Laravel TALL Stack dengan formula Haversine & offline caching.\n"
+            "3. USMAN (UMKM Assistant): Asisten bisnis cerdas berbasis AI untuk UMKM (Juara Nasional MTQMN 2023).\n"
+            "4. MD to Slide: Konverter teks Markdown menjadi slide presentasi HTML5 interaktif (Reveal.js).\n"
+            "5. KreplinTest: Alat simulasi tes kognitif digital Kraepelin/Pauli otomatis."
         )
     elif any(keyword in msg_lower for keyword in ["contact", "hubungi", "email", "linkedin", "github"]):
         response = (

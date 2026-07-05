@@ -13,14 +13,14 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#34d399", // Emerald accent
-                        "secondary": "#22d3ee", // Cyan accent
-                        "background": "#020617", // Slate 950 deep space
-                        "surface": "#0f172a", // Slate 900 surface
-                        "surface-dim": "#0b0f19",
-                        "text-primary": "#f1f5f9", // High contrast text
-                        "text-secondary": "#94a3b8", // Muted text
-                        "border-muted": "#1e293b" // Card border
+                        "primary": "var(--color-primary)",
+                        "secondary": "var(--color-secondary)",
+                        "background": "var(--color-background)",
+                        "surface": "var(--color-surface)",
+                        "surface-dim": "var(--color-surface-dim)",
+                        "text-primary": "var(--color-text-primary)",
+                        "text-secondary": "var(--color-text-secondary)",
+                        "border-muted": "var(--color-border-muted)"
                     },
                     borderRadius: {
                         "DEFAULT": "0.5rem",
@@ -38,11 +38,44 @@
         }
     </script>
     <style>
+        :root {
+            --color-primary: #059669; /* Emerald 600 */
+            --color-secondary: #0891b2; /* Cyan 600 */
+            --color-background: #f8fafc; /* Slate 50 */
+            --color-surface: #ffffff; /* White card */
+            --color-surface-dim: #f1f5f9; /* Slate 100 */
+            --color-text-primary: #0f172a; /* Slate 900 */
+            --color-text-secondary: #475569; /* Slate 600 */
+            --color-border-muted: #e2e8f0; /* Slate 200 */
+            --glass-nav-bg: rgba(248, 250, 252, 0.85);
+            --border-opacity: 0.15;
+            --chat-user-bg: rgba(5, 150, 105, 0.08);
+            --chat-ai-bg: #f1f5f9;
+            --chat-box-bg: rgba(248, 250, 252, 0.5);
+        }
+
+        .dark {
+            --color-primary: #34d399; /* Emerald 400 */
+            --color-secondary: #22d3ee; /* Cyan 400 */
+            --color-background: #020617; /* Slate 950 */
+            --color-surface: #0f172a; /* Slate 900 */
+            --color-surface-dim: #0b0f19;
+            --color-text-primary: #f1f5f9; /* Slate 100 */
+            --color-text-secondary: #94a3b8; /* Slate 400 */
+            --color-border-muted: #1e293b; /* Slate 800 */
+            --glass-nav-bg: rgba(2, 6, 23, 0.85);
+            --border-opacity: 0.4;
+            --chat-user-bg: rgba(34, 211, 238, 0.15);
+            --chat-ai-bg: rgba(30, 41, 59, 0.8);
+            --chat-box-bg: rgba(15, 23, 42, 0.5);
+        }
+
         body {
-            background-color: #020617;
-            color: #f1f5f9;
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .glow-emerald {
@@ -55,8 +88,8 @@
 
         /* Bento card animations and borders */
         .bento-card {
-            background: #0f172a;
-            border: 1px solid #1e293b;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border-muted);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -68,7 +101,7 @@
             top: 0; left: 0; right: 0; bottom: 0;
             border-radius: inherit;
             padding: 1px;
-            background: linear-gradient(135deg, rgba(52, 211, 153, 0.4), rgba(34, 211, 238, 0.4), transparent);
+            background: linear-gradient(135deg, rgba(5, 150, 105, var(--border-opacity)), rgba(8, 145, 178, var(--border-opacity)), transparent);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -79,8 +112,8 @@
 
         .bento-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px -10px rgba(52, 211, 153, 0.15);
-            border-color: rgba(52, 211, 153, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(5, 150, 105, 0.15);
+            border-color: rgba(5, 150, 105, 0.4);
         }
 
         .bento-card:hover::before {
@@ -89,13 +122,14 @@
 
         /* Glassmorphism Navigation */
         .glass-nav {
-            background: rgba(2, 6, 23, 0.8);
+            background: var(--glass-nav-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+            transition: background-color 0.3s ease;
         }
 
         .text-gradient {
-            background: linear-gradient(135deg, #34d399 0%, #22d3ee 100%);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -112,14 +146,14 @@
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #020617;
+            background: var(--color-background);
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: var(--color-border-muted);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #34d399;
+            background: var(--color-primary);
         }
     </style>
 </head>
@@ -130,28 +164,41 @@
         <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
             <a href="#hero" class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary text-2xl font-bold">terminal</span>
-                <span class="font-display font-extrabold text-lg tracking-tight text-white">ITSAR</span>
+                <span class="font-display font-extrabold text-lg tracking-tight text-text-primary">ITSAR</span>
             </a>
             
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="#projects" class="text-text-secondary hover:text-white transition-colors">Featured Projects</a>
-                <a href="#capabilities" class="text-text-secondary hover:text-white transition-colors">Bento Capabilities</a>
-                <a href="#timeline" class="text-text-secondary hover:text-white transition-colors">Timeline</a>
-                <a href="#chatbot" class="text-text-secondary hover:text-white transition-colors">Ask AI</a>
+                <a href="#projects" class="text-text-secondary hover:text-text-primary transition-colors">Featured Projects</a>
+                <a href="#capabilities" class="text-text-secondary hover:text-text-primary transition-colors">Bento Capabilities</a>
+                <a href="#timeline" class="text-text-secondary hover:text-text-primary transition-colors">Timeline</a>
+                <a href="#chatbot" class="text-text-secondary hover:text-text-primary transition-colors">Ask AI</a>
+                
+                <!-- Toggle Theme Button (Desktop) -->
+                <button id="theme-toggle" class="text-text-secondary hover:text-text-primary transition-colors flex items-center justify-center p-2 rounded-lg hover:bg-surface-dim focus:outline-none">
+                    <span class="material-symbols-outlined text-lg" id="theme-toggle-icon">light_mode</span>
+                </button>
+
                 <a href="#contact" class="bg-primary/10 border border-primary/20 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg transition-all">Connect</a>
             </nav>
 
-            <button id="menu-btn" class="md:hidden text-text-primary focus:outline-none">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
+            <div class="flex items-center gap-4 md:hidden">
+                <!-- Toggle Theme Button (Mobile) -->
+                <button id="theme-toggle-mobile" class="text-text-secondary hover:text-text-primary transition-colors flex items-center justify-center p-2 rounded-lg hover:bg-surface-dim focus:outline-none">
+                    <span class="material-symbols-outlined text-lg" id="theme-toggle-icon-mobile">light_mode</span>
+                </button>
+
+                <button id="menu-btn" class="text-text-primary focus:outline-none p-2 rounded-lg hover:bg-surface-dim">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
         </div>
 
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-background/95 border-b border-border-muted px-6 py-4 flex flex-col gap-4 text-center">
-            <a href="#projects" class="text-text-secondary hover:text-white py-2">Featured Projects</a>
-            <a href="#capabilities" class="text-text-secondary hover:text-white py-2">Bento Capabilities</a>
-            <a href="#timeline" class="text-text-secondary hover:text-white py-2">Timeline</a>
-            <a href="#chatbot" class="text-text-secondary hover:text-white py-2">Ask AI</a>
+            <a href="#projects" class="text-text-secondary hover:text-text-primary py-2">Featured Projects</a>
+            <a href="#capabilities" class="text-text-secondary hover:text-text-primary py-2">Bento Capabilities</a>
+            <a href="#timeline" class="text-text-secondary hover:text-text-primary py-2">Timeline</a>
+            <a href="#chatbot" class="text-text-secondary hover:text-text-primary py-2">Ask AI</a>
             <a href="#contact" class="bg-primary/10 border border-primary/20 text-primary py-2 rounded-lg">Connect</a>
         </div>
     </header>
@@ -159,7 +206,7 @@
     <main class="w-full flex-grow">
         <!-- Hero Section -->
         <section id="hero" class="relative py-24 md:py-32 overflow-hidden flex flex-col justify-center items-center px-6">
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(52,211,153,0.06),transparent_60%)]"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(5,150,105,0.06),transparent_60%)]"></div>
             
             <div class="relative z-10 max-w-4xl text-center flex flex-col items-center">
                 <!-- Availability Badge -->
@@ -172,7 +219,7 @@
                 </div>
 
                 <!-- Headline -->
-                <h1 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none mb-8 text-white">
+                <h1 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none mb-8 text-text-primary">
                     Itsar Irsyada Surga — <span class="text-gradient">Product Manager</span> &amp; Full-Stack Engineer
                 </h1>
                 
@@ -183,12 +230,11 @@
 
                 <!-- Action CTA -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
-                    <a href="#projects" class="bg-primary text-slate-950 font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-all glow-emerald">
+                    <a href="#projects" class="bg-primary text-white dark:text-slate-950 font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-primary/90 transition-all glow-emerald">
                         View Featured Projects
                         <span class="material-symbols-outlined text-sm font-bold">arrow_downward</span>
                     </a>
-                    <!-- Fallback to a print style anchor or dummy link since PDF resume path is externalized -->
-                    <a href="https://www.linkedin.com/in/itsar-irsyada-surga-036b69162/" target="_blank" class="border border-border-muted hover:border-primary/40 text-white font-bold px-8 py-4 rounded-lg transition-all flex items-center justify-center gap-2">
+                    <a href="https://www.linkedin.com/in/itsar-irsyada-surga-036b69162/" target="_blank" class="border border-border-muted hover:border-primary/40 text-text-primary font-bold px-8 py-4 rounded-lg transition-all flex items-center justify-center gap-2">
                         Download Resume
                         <span class="material-symbols-outlined text-sm">download</span>
                     </a>
@@ -199,7 +245,7 @@
         <!-- Featured Projects Section -->
         <section id="projects" class="py-24 px-6 max-w-6xl mx-auto">
             <div class="mb-16 border-l-4 border-primary pl-4">
-                <h2 class="font-display text-3xl font-extrabold text-white">Featured Masterpiece Projects</h2>
+                <h2 class="font-display text-3xl font-extrabold text-text-primary">Featured Masterpiece Projects</h2>
                 <p class="text-text-secondary text-sm font-mono mt-1 uppercase">Structured with the STAR Methodology</p>
             </div>
 
@@ -217,10 +263,10 @@
                             <div class="flex flex-wrap gap-2 mb-6">
                                 <span class="tech-badge bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-md text-primary">MobileViT-S</span>
                                 <span class="tech-badge bg-secondary/10 border border-secondary/20 px-2.5 py-1 rounded-md text-secondary">NVIDIA Jetson</span>
-                                <span class="tech-badge bg-white/5 border border-white/10 px-2.5 py-1 rounded-md text-white">Computer Vision</span>
-                                <span class="tech-badge bg-white/5 border border-white/10 px-2.5 py-1 rounded-md text-white">Edge AI</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Computer Vision</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Edge AI</span>
                             </div>
-                            <h3 class="font-display text-2xl font-bold text-white mb-6">Smart Wheelchair (Deep Tech CV)</h3>
+                            <h3 class="font-display text-2xl font-bold text-text-primary mb-6">Smart Wheelchair (Deep Tech CV)</h3>
                             
                             <!-- STAR Layout -->
                             <div class="space-y-4 text-sm font-body">
@@ -248,7 +294,7 @@
                                 <span>Live Demo</span>
                                 <span class="material-symbols-outlined text-xs">launch</span>
                             </a>
-                            <a href="#" class="border border-border-muted hover:border-white/20 text-white text-xs font-mono px-4 py-2.5 rounded-lg flex items-center gap-2">
+                            <a href="#" class="border border-border-muted hover:border-white/20 text-text-primary text-xs font-mono px-4 py-2.5 rounded-lg flex items-center gap-2">
                                 <span>Code Base</span>
                                 <span class="material-symbols-outlined text-xs">code</span>
                             </a>
@@ -265,10 +311,10 @@
                             <div class="flex flex-wrap gap-2 mb-6">
                                 <span class="tech-badge bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-md text-primary">Laravel TALL</span>
                                 <span class="tech-badge bg-secondary/10 border border-secondary/20 px-2.5 py-1 rounded-md text-secondary">Haversine API</span>
-                                <span class="tech-badge bg-white/5 border border-white/10 px-2.5 py-1 rounded-md text-white">Offline-First</span>
-                                <span class="tech-badge bg-white/5 border border-white/10 px-2.5 py-1 rounded-md text-white">Geo-Fencing</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Offline-First</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Geo-Fencing</span>
                             </div>
-                            <h3 class="font-display text-2xl font-bold text-white mb-6">TerraTrack (Enterprise HR Tech)</h3>
+                            <h3 class="font-display text-2xl font-bold text-text-primary mb-6">TerraTrack (Enterprise HR Tech)</h3>
                             
                             <!-- STAR Layout -->
                             <div class="space-y-4 text-sm font-body">
@@ -296,7 +342,7 @@
                                 <span>Live Demo</span>
                                 <span class="material-symbols-outlined text-xs">launch</span>
                             </a>
-                            <a href="#" class="border border-border-muted hover:border-white/20 text-white text-xs font-mono px-4 py-2.5 rounded-lg flex items-center gap-2">
+                            <a href="#" class="border border-border-muted hover:border-white/20 text-text-primary text-xs font-mono px-4 py-2.5 rounded-lg flex items-center gap-2">
                                 <span>Code Base</span>
                                 <span class="material-symbols-outlined text-xs">code</span>
                             </a>
@@ -313,10 +359,10 @@
                             <div class="flex flex-wrap gap-2 mb-6">
                                 <span class="tech-badge bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-md text-primary">FastAPI</span>
                                 <span class="tech-badge bg-secondary/10 border border-secondary/20 px-2.5 py-1 rounded-md text-secondary">LLM Engine</span>
-                                <span class="tech-badge bg-white/5 border border-white/10 px-2.5 py-1 rounded-md text-white">Android AI</span>
-                                <span class="tech-badge bg-white/5 border border-white/10 px-2.5 py-1 rounded-md text-white">Product Strategy</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Android AI</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Product Strategy</span>
                             </div>
-                            <h3 class="font-display text-2xl font-bold text-white mb-6">USMAN — UMKM Smart Assistant (AI App)</h3>
+                            <h3 class="font-display text-2xl font-bold text-text-primary mb-6">USMAN — UMKM Smart Assistant (AI App)</h3>
                             
                             <!-- STAR Layout -->
                             <div class="space-y-4 text-sm font-body">
@@ -344,13 +390,110 @@
                                 <span>Live Demo</span>
                                 <span class="material-symbols-outlined text-xs">launch</span>
                             </a>
-                            <a href="#" class="border border-border-muted hover:border-white/20 text-white text-xs font-mono px-4 py-2.5 rounded-lg flex items-center gap-2">
+                            <a href="#" class="border border-border-muted hover:border-white/20 text-text-primary text-xs font-mono px-4 py-2.5 rounded-lg flex items-center gap-2">
                                 <span>Code Base</span>
                                 <span class="material-symbols-outlined text-xs">code</span>
                             </a>
                         </div>
                     </div>
                 </div>
+
+                <!-- Project 4: MD to Slide -->
+                <div class="bento-card rounded-xl p-6 md:p-8 flex flex-col lg:flex-row-reverse gap-8 items-stretch">
+                    <div class="lg:w-1/2 rounded-lg overflow-hidden bg-cover bg-center min-h-[300px] border border-border-muted" style="background-image: url('./md_to_slide.png');"></div>
+                    
+                    <div class="lg:w-1/2 flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="tech-badge bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-md text-primary">HTML5</span>
+                                <span class="tech-badge bg-secondary/10 border border-secondary/20 px-2.5 py-1 rounded-md text-secondary">Reveal.js</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Markdown Parser</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Client-Side Render</span>
+                            </div>
+                            <h3 class="font-display text-2xl font-bold text-text-primary mb-6">MD to Slide (Presentation Tool)</h3>
+                            
+                            <!-- STAR Layout -->
+                            <div class="space-y-4 text-sm font-body">
+                                <div>
+                                    <span class="font-mono text-xs text-primary uppercase block">Situation:</span>
+                                    <p class="text-text-secondary">Pembuatan slide presentasi teknis secara manual memakan waktu lama dan formatnya sering tidak konsisten.</p>
+                                </div>
+                                <div>
+                                    <span class="font-mono text-xs text-primary uppercase block">Task:</span>
+                                    <p class="text-text-secondary">Membangun alat konverter instan dari file teks Markdown menjadi slide presentasi HTML5 interaktif yang dinamis.</p>
+                                </div>
+                                <div>
+                                    <span class="font-mono text-xs text-primary uppercase block">Action:</span>
+                                    <p class="text-text-secondary">Menerapkan parser Markdown di sisi klien terintegrasi dengan framework Reveal.js, mendesain tema visual kustom, dan menambahkan fitur ekspor materi secara cepat.</p>
+                                </div>
+                                <div>
+                                    <span class="font-mono text-xs text-primary uppercase block">Result:</span>
+                                    <p class="text-text-secondary">Memangkas waktu penyusunan modul presentasi teknis hingga 80% dengan hasil slide presentasi yang bersih, terstruktur, dan responsif.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-border-muted flex gap-4">
+                            <a href="https://itsar.futurehero.id/md-to-slide/" target="_blank" class="bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary text-xs font-mono font-bold px-4 py-2.5 rounded-lg flex items-center gap-2">
+                                <span>Live Demo</span>
+                                <span class="material-symbols-outlined text-xs">launch</span>
+                            </a>
+                            <a href="#" class="border border-border-muted hover:border-white/20 text-text-primary text-xs font-mono px-4 py-2.5 rounded-lg flex items-center gap-2">
+                                <span>Code Base</span>
+                                <span class="material-symbols-outlined text-xs">code</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5: KreplinTest -->
+                <div class="bento-card rounded-xl p-6 md:p-8 flex flex-col lg:flex-row gap-8 items-stretch">
+                    <div class="lg:w-1/2 rounded-lg overflow-hidden bg-cover bg-center min-h-[300px] border border-border-muted" style="background-image: url('./kreplin_test.png');"></div>
+                    
+                    <div class="lg:w-1/2 flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="tech-badge bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-md text-primary">Web-based Test</span>
+                                <span class="tech-badge bg-secondary/10 border border-secondary/20 px-2.5 py-1 rounded-md text-secondary">Cognitive Analytics</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Psychological Tool</span>
+                                <span class="tech-badge bg-white/5 border border-white/10 dark:border-white/10 dark:bg-white/5 px-2.5 py-1 rounded-md text-text-primary">Real-Time Chart</span>
+                            </div>
+                            <h3 class="font-display text-2xl font-bold text-text-primary mb-6">KreplinTest (Cognitive Assessment)</h3>
+                            
+                            <!-- STAR Layout -->
+                            <div class="space-y-4 text-sm font-body">
+                                <div>
+                                    <span class="font-mono text-xs text-primary uppercase block">Situation:</span>
+                                    <p class="text-text-secondary">Tes psikologi Kraepelin/Pauli berbasis kertas konvensional membutuhkan rekapitulasi data dan analisis psikogram secara manual yang memakan waktu.</p>
+                                </div>
+                                <div>
+                                    <span class="font-mono text-xs text-primary uppercase block">Task:</span>
+                                    <p class="text-text-secondary">Melakukan digitalisasi penuh tes Kraepelin untuk mengukur tingkat konsentrasi, ketelitian, dan stabilitas kecepatan kerja peserta secara otomatis.</p>
+                                </div>
+                                <div>
+                                    <span class="font-mono text-xs text-primary uppercase block">Action:</span>
+                                    <p class="text-text-secondary">Merancang UI interaktif yang meminimalkan distraksi kognitif, menerapkan algoritma kalkulasi kecepatan (work speed), tingkat kesalahan (error rate), serta visualisasi grafik performa menggunakan Chart.js.</p>
+                                </div>
+                                <div>
+                                    <span class="font-mono text-xs text-primary uppercase block">Result:</span>
+                                    <p class="text-text-secondary">Menghasilkan laporan dashboard psikogram instan dan akurat yang langsung mempermudah proses evaluasi dan seleksi oleh HR/Recruiter.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-border-muted flex gap-4">
+                            <a href="https://itsar.futurehero.id/KreplinTest/" target="_blank" class="bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary text-xs font-mono font-bold px-4 py-2.5 rounded-lg flex items-center gap-2">
+                                <span>Live Demo</span>
+                                <span class="material-symbols-outlined text-xs">launch</span>
+                            </a>
+                            <a href="#" class="border border-border-muted hover:border-white/20 text-text-primary text-xs font-mono px-4 py-2.5 rounded-lg flex items-center gap-2">
+                                <span>Code Base</span>
+                                <span class="material-symbols-outlined text-xs">code</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -359,14 +502,14 @@
             <div class="max-w-6xl mx-auto px-6">
                 <div class="text-center mb-16">
                     <span class="text-xs font-mono text-primary uppercase tracking-widest block mb-2">Interactive Machine Learning</span>
-                    <h2 class="font-display text-3xl font-extrabold text-white">Try the MobileViT-S Image Predictor</h2>
+                    <h2 class="font-display text-3xl font-extrabold text-text-primary">Try the MobileViT-S Image Predictor</h2>
                     <div class="w-16 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-4 rounded-full"></div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
                     <!-- Upload Area -->
                     <div class="bento-card rounded-xl p-6">
-                        <h3 class="font-display text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <h3 class="font-display text-lg font-bold text-text-primary mb-4 flex items-center gap-2">
                             <span class="material-symbols-outlined text-primary">cloud_upload</span>
                             Upload Image to API
                         </h3>
@@ -396,13 +539,13 @@
                     <!-- Output Results -->
                     <div class="bento-card rounded-xl p-6 flex flex-col justify-between min-h-[360px]">
                         <div>
-                            <h3 class="font-display text-lg font-bold text-white mb-4 flex items-center gap-2">
+                            <h3 class="font-display text-lg font-bold text-text-primary mb-4 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-secondary">terminal</span>
                                 Inference Outputs
                             </h3>
                             <p class="text-text-secondary text-sm mb-6">Output klasifikasi mentah dari model ONNX MobileViT-S dalam bentuk list logits array.</p>
                         </div>
-                        <div class="flex-grow bg-slate-950 border border-border-muted p-4 rounded-lg font-mono text-xs text-secondary overflow-y-auto h-52">
+                        <div class="flex-grow bg-slate-950/40 border border-border-muted p-4 rounded-lg font-mono text-xs text-secondary overflow-y-auto h-52">
                             <pre id="resultBox" class="whitespace-pre-wrap">Waiting for image and trigger analysis...</pre>
                         </div>
                     </div>
@@ -413,7 +556,7 @@
         <!-- Core Capabilities Bento Grid -->
         <section id="capabilities" class="py-24 px-6 max-w-6xl mx-auto">
             <div class="mb-16 border-l-4 border-primary pl-4">
-                <h2 class="font-display text-3xl font-extrabold text-white">Core Capabilities</h2>
+                <h2 class="font-display text-3xl font-extrabold text-text-primary">Core Capabilities</h2>
                 <p class="text-text-secondary text-sm font-mono mt-1 uppercase">Technical &amp; Management Architecture Matrix</p>
             </div>
 
@@ -425,7 +568,7 @@
                         <div class="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mb-6">
                             <span class="material-symbols-outlined text-primary text-2xl">insights</span>
                         </div>
-                        <h3 class="font-display text-lg font-bold text-white mb-2">Product &amp; Leadership</h3>
+                        <h3 class="font-display text-lg font-bold text-text-primary mb-2">Product &amp; Leadership</h3>
                         <p class="text-text-secondary text-sm leading-relaxed mb-6">Mengawal siklus hidup produk, koordinasi tim, manajemen risiko hingga skala organisasi besar.</p>
                     </div>
                     <ul class="space-y-2.5 font-mono text-xs text-primary uppercase border-t border-border-muted pt-6">
@@ -442,20 +585,20 @@
                         <div class="w-12 h-12 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center mb-6">
                             <span class="material-symbols-outlined text-secondary text-2xl">code</span>
                         </div>
-                        <h3 class="font-display text-lg font-bold text-white mb-2">Software &amp; AI Architecture</h3>
+                        <h3 class="font-display text-lg font-bold text-text-primary mb-2">Software &amp; AI Architecture</h3>
                         <p class="text-text-secondary text-sm leading-relaxed mb-6">Membangun ekosistem web modern berkecepatan tinggi, andal, integrasi AI, serta memiliki skalabilitas database.</p>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 border-t border-border-muted pt-6">
-                        <div class="bg-slate-950/40 p-4 border border-border-muted rounded-lg hover:border-primary/30 transition-colors">
-                            <div class="text-sm font-bold text-white mb-1">Laravel &amp; TALL</div>
+                        <div class="bg-slate-950/40 dark:bg-slate-900/40 p-4 border border-border-muted rounded-lg hover:border-primary/30 transition-colors">
+                            <div class="text-sm font-bold text-text-primary mb-1">Laravel &amp; TALL</div>
                             <div class="text-[10px] text-text-secondary font-mono uppercase">Fullstack PHP Stack</div>
                         </div>
-                        <div class="bg-slate-950/40 p-4 border border-border-muted rounded-lg hover:border-primary/30 transition-colors">
-                            <div class="text-sm font-bold text-white mb-1">React &amp; FastAPI</div>
+                        <div class="bg-slate-950/40 dark:bg-slate-900/40 p-4 border border-border-muted rounded-lg hover:border-primary/30 transition-colors">
+                            <div class="text-sm font-bold text-text-primary mb-1">React &amp; FastAPI</div>
                             <div class="text-[10px] text-text-secondary font-mono uppercase">Decoupled AI API</div>
                         </div>
-                        <div class="bg-slate-950/40 p-4 border border-border-muted rounded-lg hover:border-primary/30 transition-colors">
-                            <div class="text-sm font-bold text-white mb-1">Generative AI</div>
+                        <div class="bg-slate-950/40 dark:bg-slate-900/40 p-4 border border-border-muted rounded-lg hover:border-primary/30 transition-colors">
+                            <div class="text-sm font-bold text-text-primary mb-1">Generative AI</div>
                             <div class="text-[10px] text-text-secondary font-mono uppercase">LLM &amp; RAG Systems</div>
                         </div>
                     </div>
@@ -464,25 +607,25 @@
                 <!-- Grid item 3: Hardware & Embedded -->
                 <div class="bento-card md:col-span-12 rounded-xl p-6 flex flex-col md:flex-row gap-8 items-center">
                     <div class="md:w-1/3">
-                        <div class="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center mb-6">
-                            <span class="material-symbols-outlined text-white text-2xl">memory</span>
+                        <div class="w-12 h-12 rounded-lg bg-white/5 border border-border-muted dark:border-white/10 flex items-center justify-center mb-6">
+                            <span class="material-symbols-outlined text-text-primary text-2xl">memory</span>
                         </div>
-                        <h3 class="font-display text-lg font-bold text-white mb-2">Hardware &amp; Embedded</h3>
+                        <h3 class="font-display text-lg font-bold text-text-primary mb-2">Hardware &amp; Embedded</h3>
                         <p class="text-text-secondary text-sm leading-relaxed">Menyatukan kecerdasan digital dengan mesin fisik melalui AI tepi (Edge AI) dan mikrokontroler.</p>
                     </div>
                     
                     <div class="flex-grow grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-                        <div class="p-5 border border-border-muted rounded-lg text-center bg-slate-950/40 hover:border-primary/30 transition-colors">
+                        <div class="p-5 border border-border-muted rounded-lg text-center bg-slate-950/40 dark:bg-slate-900/40 hover:border-primary/30 transition-colors">
                             <div class="font-mono text-xs text-primary mb-2 uppercase">Edge Computing</div>
-                            <div class="text-sm font-bold text-white">NVIDIA Jetson / Nano</div>
+                            <div class="text-sm font-bold text-text-primary">NVIDIA Jetson / Nano</div>
                         </div>
-                        <div class="p-5 border border-border-muted rounded-lg text-center bg-slate-950/40 hover:border-primary/30 transition-colors">
+                        <div class="p-5 border border-border-muted rounded-lg text-center bg-slate-950/40 dark:bg-slate-900/40 hover:border-primary/30 transition-colors">
                             <div class="font-mono text-xs text-primary mb-2 uppercase">Vision Pipelines</div>
-                            <div class="text-sm font-bold text-white">OpenCV / TensorRT</div>
+                            <div class="text-sm font-bold text-text-primary">OpenCV / TensorRT</div>
                         </div>
-                        <div class="p-5 border border-border-muted rounded-lg text-center bg-slate-950/40 hover:border-primary/30 transition-colors">
+                        <div class="p-5 border border-border-muted rounded-lg text-center bg-slate-950/40 dark:bg-slate-900/40 hover:border-primary/30 transition-colors">
                             <div class="font-mono text-xs text-primary mb-2 uppercase">Actuation</div>
-                            <div class="text-sm font-bold text-white">Microcontrollers / ROS</div>
+                            <div class="text-sm font-bold text-text-primary">Microcontrollers / ROS</div>
                         </div>
                     </div>
                 </div>
@@ -493,7 +636,7 @@
         <section id="timeline" class="py-24 bg-slate-950/40 border-y border-border-muted">
             <div class="max-w-4xl mx-auto px-6">
                 <div class="mb-16 border-l-4 border-primary pl-4">
-                    <h2 class="font-display text-3xl font-extrabold text-white">Leadership &amp; Industry Impact</h2>
+                    <h2 class="font-display text-3xl font-extrabold text-text-primary">Leadership &amp; Industry Impact</h2>
                     <p class="text-text-secondary text-sm font-mono mt-1 uppercase">Professional Journey and Tech Scale-Up</p>
                 </div>
 
@@ -502,7 +645,7 @@
                     <div class="flex items-center gap-4">
                         <span class="material-symbols-outlined text-secondary text-4xl">workspace_premium</span>
                         <div>
-                            <h4 class="font-display text-lg font-bold text-white">Certified Technology Information Manager (CITM)</h4>
+                            <h4 class="font-display text-lg font-bold text-text-primary">Certified Technology Information Manager (CITM)</h4>
                             <p class="text-text-secondary text-xs font-mono uppercase mt-1">Professional Certification</p>
                         </div>
                     </div>
@@ -515,63 +658,63 @@
                     <!-- Smart ID -->
                     <div class="relative">
                         <!-- Node Circle -->
-                        <span class="absolute -left-[37px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-slate-950 border border-primary">
+                        <span class="absolute -left-[37px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-background border border-primary">
                           <span class="h-2 w-2 rounded-full bg-primary"></span>
                         </span>
                         
                         <div class="flex flex-col sm:flex-row justify-between items-start gap-2 mb-3">
-                            <h3 class="font-display text-lg font-bold text-white">Smart ID</h3>
-                            <span class="text-xs font-mono text-text-secondary bg-slate-950 border border-border-muted px-2.5 py-1 rounded-md">2023 — Present</span>
+                            <h3 class="font-display text-lg font-bold text-text-primary">Smart ID</h3>
+                            <span class="text-xs font-mono text-text-secondary bg-background border border-border-muted px-2.5 py-1 rounded-md">2023 — Present</span>
                         </div>
                         <div class="text-sm font-bold text-primary mb-3">Associate Product Manager &amp; Full-Stack Dev</div>
                         <p class="text-text-secondary text-sm leading-relaxed mb-4">
                             Memimpin tim pengembang beranggotakan 15 orang untuk merancang, mengimplementasikan, dan mengelola aplikasi pelayanan publik terintegrasi berbasis AI di tingkat regional.
                         </p>
                         <div class="flex gap-2">
-                            <span class="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-text-secondary">TEAM LEAD</span>
-                            <span class="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-text-secondary">SYSTEMS INTEGRATION</span>
+                            <span class="text-[10px] font-mono bg-white/5 border border-border-muted px-2 py-0.5 rounded text-text-secondary">TEAM LEAD</span>
+                            <span class="text-[10px] font-mono bg-white/5 border border-border-muted px-2 py-0.5 rounded text-text-secondary">SYSTEMS INTEGRATION</span>
                         </div>
                     </div>
 
                     <!-- Hero Academy -->
                     <div class="relative">
                         <!-- Node Circle -->
-                        <span class="absolute -left-[37px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-slate-950 border border-border-muted">
+                        <span class="absolute -left-[37px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-background border border-border-muted">
                           <span class="h-2 w-2 rounded-full bg-text-secondary"></span>
                         </span>
                         
                         <div class="flex flex-col sm:flex-row justify-between items-start gap-2 mb-3">
-                            <h3 class="font-display text-lg font-bold text-white">Hero Academy</h3>
-                            <span class="text-xs font-mono text-text-secondary bg-slate-950 border border-border-muted px-2.5 py-1 rounded-md">2021 — 2023</span>
+                            <h3 class="font-display text-lg font-bold text-text-primary">Hero Academy</h3>
+                            <span class="text-xs font-mono text-text-secondary bg-background border border-border-muted px-2.5 py-1 rounded-md">2021 — 2023</span>
                         </div>
                         <div class="text-sm font-bold text-primary mb-3">Founder &amp; Program Director</div>
                         <p class="text-text-secondary text-sm leading-relaxed mb-4">
                             Mendirikan program pelatihan edukasi robotika dan AI adaptif berbasis Drone (SmartCamp) untuk siswa-siswi sekolah menengah guna memvalidasi kemampuan teknologi robotika otonom.
                         </p>
                         <div class="flex gap-2">
-                            <span class="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-text-secondary">CURRICULUM DESIGN</span>
-                            <span class="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-text-secondary">ROBOTICS FOUNDER</span>
+                            <span class="text-[10px] font-mono bg-white/5 border border-border-muted px-2 py-0.5 rounded text-text-secondary">CURRICULUM DESIGN</span>
+                            <span class="text-[10px] font-mono bg-white/5 border border-border-muted px-2 py-0.5 rounded text-text-secondary">ROBOTICS FOUNDER</span>
                         </div>
                     </div>
 
                     <!-- Robotiik FILKOM UB -->
                     <div class="relative">
                         <!-- Node Circle -->
-                        <span class="absolute -left-[37px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-slate-950 border border-border-muted">
+                        <span class="absolute -left-[37px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-background border border-border-muted">
                           <span class="h-2 w-2 rounded-full bg-text-secondary"></span>
                         </span>
                         
                         <div class="flex flex-col sm:flex-row justify-between items-start gap-2 mb-3">
-                            <h3 class="font-display text-lg font-bold text-white">Robotiik FILKOM UB</h3>
-                            <span class="text-xs font-mono text-text-secondary bg-slate-950 border border-border-muted px-2.5 py-1 rounded-md">2022 — 2023</span>
+                            <h3 class="font-display text-lg font-bold text-text-primary">Robotiik FILKOM UB</h3>
+                            <span class="text-xs font-mono text-text-secondary bg-background border border-border-muted px-2.5 py-1 rounded-md">2022 — 2023</span>
                         </div>
                         <div class="text-sm font-bold text-primary mb-3">Chairman (Ketua Umum)</div>
                         <p class="text-text-secondary text-sm leading-relaxed mb-4">
                             Memimpin restrukturisasi dan riset organisasi kemahasiswaan riset robotika dengan anggota aktif mencapai **120+ orang**. Mengelola alokasi budget riset dan memimpin kompetisi tingkat nasional.
                         </p>
                         <div class="flex gap-2">
-                            <span class="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-text-secondary">120+ STAFF MANAGED</span>
-                            <span class="text-[10px] font-mono bg-white/5 border border-white/10 px-2 py-0.5 rounded text-text-secondary">COMPETITION COORDINATION</span>
+                            <span class="text-[10px] font-mono bg-white/5 border border-border-muted px-2 py-0.5 rounded text-text-secondary">120+ STAFF MANAGED</span>
+                            <span class="text-[10px] font-mono bg-white/5 border border-border-muted px-2 py-0.5 rounded text-text-secondary">COMPETITION COORDINATION</span>
                         </div>
                     </div>
                 </div>
@@ -582,38 +725,38 @@
         <section id="chatbot" class="py-24 px-6 max-w-4xl mx-auto">
             <div class="text-center mb-16">
                 <span class="text-xs font-mono text-primary uppercase tracking-widest block mb-2">Conversational Agent</span>
-                <h2 class="font-display text-3xl font-extrabold text-white">Ask Itsar (Virtual Assistant)</h2>
+                <h2 class="font-display text-3xl font-extrabold text-text-primary">Ask Itsar (Virtual Assistant)</h2>
                 <div class="w-16 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-4 rounded-full"></div>
             </div>
 
             <!-- Chat Container -->
             <div class="bento-card rounded-xl overflow-hidden flex flex-col h-[520px] shadow-2xl shadow-primary/5">
                 <!-- Chat Window Header -->
-                <div class="bg-slate-950 border-b border-border-muted px-6 py-4 flex items-center gap-3">
+                <div class="bg-slate-950/40 border-b border-border-muted px-6 py-4 flex items-center gap-3">
                     <span class="relative flex h-2.5 w-2.5">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
                     </span>
                     <div>
-                        <div class="text-sm font-bold text-white">Itsar-Agent (Qwen LLM/Mock Fallback)</div>
+                        <div class="text-sm font-bold text-text-primary">Itsar-Agent (Qwen LLM/Mock Fallback)</div>
                         <div class="text-[10px] text-text-secondary font-mono">ONLINE / READY</div>
                     </div>
                 </div>
 
                 <!-- Chat Box Bubbles -->
-                <div id="chat-box" class="flex-grow p-6 space-y-4 overflow-y-auto bg-slate-900/50">
+                <div id="chat-box" class="flex-grow p-6 space-y-4 overflow-y-auto bg-slate-900/10 dark:bg-slate-900/50">
                     <div class="flex items-start gap-3">
                         <div class="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">AI</div>
-                        <div class="bg-slate-800/80 border border-border-muted text-sm text-text-primary px-4 py-3 rounded-r-xl rounded-bl-xl max-w-md whitespace-pre-line leading-relaxed">
+                        <div class="bg-slate-800/10 dark:bg-slate-800/80 border border-border-muted text-sm text-text-primary px-4 py-3 rounded-r-xl rounded-bl-xl max-w-md whitespace-pre-line leading-relaxed">
                             Hello! Saya asisten virtual Itsar. Tanyakan apa saja tentang keahlian (skills), proyek unggulan (projects), pengalaman kerja/organisasi (timeline), atau cara menghubungi Itsar (contact).
                         </div>
                     </div>
                 </div>
 
                 <!-- Input Footer -->
-                <div class="p-4 bg-slate-950 border-t border-border-muted">
+                <div class="p-4 bg-slate-950/30 border-t border-border-muted">
                     <div class="flex items-center gap-3">
-                        <input id="chat-input" type="text" class="flex-grow bg-slate-900 border border-border-muted rounded-full h-12 px-6 text-sm text-white placeholder-text-secondary/70 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/60" placeholder="Ask me about Itsar's capabilities or projects..."/>
+                        <input id="chat-input" type="text" class="flex-grow bg-surface border border-border-muted rounded-full h-12 px-6 text-sm text-text-primary placeholder-text-secondary/70 focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/60" placeholder="Ask me about Itsar's capabilities or projects..."/>
                         <button id="send-btn" class="w-12 h-12 rounded-full bg-primary hover:bg-primary/95 text-slate-950 flex items-center justify-center transition-colors shadow-lg glow-emerald">
                             <span class="material-symbols-outlined font-bold">send</span>
                         </button>
@@ -627,7 +770,7 @@
             <div class="max-w-3xl mx-auto px-6">
                 <div class="text-center mb-16">
                     <span class="text-xs font-mono text-primary uppercase tracking-widest block mb-2">Get In Touch</span>
-                    <h2 class="font-display text-3xl font-extrabold text-white">Let's Connect</h2>
+                    <h2 class="font-display text-3xl font-extrabold text-text-primary">Let's Connect</h2>
                     <p class="text-text-secondary text-sm mt-3">Diskusikan kebutuhan manajemen produk atau pengembangan software engineering Anda.</p>
                 </div>
 
@@ -636,23 +779,23 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-xs font-mono text-text-secondary uppercase mb-2" for="name">Name</label>
-                                <input class="w-full bg-slate-950 border border-border-muted rounded-lg h-12 px-4 text-white placeholder-text-secondary/50 focus:border-primary/60 focus:ring-0" id="name" required placeholder="Your Name" type="text"/>
+                                <input class="w-full bg-background border border-border-muted rounded-lg h-12 px-4 text-text-primary placeholder-text-secondary/50 focus:border-primary/60 focus:ring-0" id="name" required placeholder="Your Name" type="text"/>
                             </div>
                             <div>
                                 <label class="block text-xs font-mono text-text-secondary uppercase mb-2" for="email">Email</label>
-                                <input class="w-full bg-slate-950 border border-border-muted rounded-lg h-12 px-4 text-white placeholder-text-secondary/50 focus:border-primary/60 focus:ring-0" id="email" required placeholder="name@company.com" type="email"/>
+                                <input class="w-full bg-background border border-border-muted rounded-lg h-12 px-4 text-text-primary placeholder-text-secondary/50 focus:border-primary/60 focus:ring-0" id="email" required placeholder="name@company.com" type="email"/>
                             </div>
                         </div>
                         <div>
                             <label class="block text-xs font-mono text-text-secondary uppercase mb-2" for="message">Message</label>
-                            <textarea class="w-full bg-slate-950 border border-border-muted rounded-lg p-4 text-white placeholder-text-secondary/50 focus:border-primary/60 focus:ring-0" id="message" required placeholder="Discussing a new project, hiring invitation, or collaboration proposal..." rows="5"></textarea>
+                            <textarea class="w-full bg-background border border-border-muted rounded-lg p-4 text-text-primary placeholder-text-secondary/50 focus:border-primary/60 focus:ring-0" id="message" required placeholder="Discussing a new project, hiring invitation, or collaboration proposal..." rows="5"></textarea>
                         </div>
 
                         <div id="contact-success" class="hidden text-sm text-primary font-mono text-center">
                             ✓ Thank you! Message simulated successfully. I will get back to you shortly.
                         </div>
 
-                        <button class="w-full bg-primary text-slate-950 font-bold h-12 px-6 rounded-lg hover:bg-primary/95 transition-all glow-emerald flex items-center justify-center gap-2" type="submit" id="submit-btn">
+                        <button class="w-full bg-primary text-white dark:text-slate-950 font-bold h-12 px-6 rounded-lg hover:bg-primary/95 transition-all glow-emerald flex items-center justify-center gap-2" type="submit" id="submit-btn">
                             <span class="material-symbols-outlined">mail</span>
                             Send Message
                         </button>
@@ -663,11 +806,11 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-950 border-t border-border-muted py-16">
+    <footer class="bg-slate-950/40 border-t border-border-muted py-16">
         <div class="max-w-6xl mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
                 <div>
-                    <h2 class="font-display text-2xl font-extrabold text-white mb-6">
+                    <h2 class="font-display text-2xl font-extrabold text-text-primary mb-6">
                         itsar@futurehero.id
                     </h2>
                     <p class="text-text-secondary text-sm leading-relaxed max-w-sm">
@@ -677,7 +820,7 @@
                 
                 <div class="flex md:justify-end items-center">
                     <div class="flex flex-col gap-3 font-mono text-xs uppercase tracking-wider text-text-secondary">
-                        <span class="text-white mb-1">Quick Links</span>
+                        <span class="text-text-primary mb-1">Quick Links</span>
                         <a href="#projects" class="hover:text-primary transition-colors">Case Studies</a>
                         <a href="#capabilities" class="hover:text-primary transition-colors">Bento Matrix</a>
                         <a href="#timeline" class="hover:text-primary transition-colors">Timeline</a>
@@ -689,7 +832,7 @@
             <div class="pt-8 border-t border-border-muted flex flex-col sm:flex-row justify-between items-center gap-6">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary text-xl">terminal</span>
-                    <span class="font-display font-extrabold text-sm tracking-tight text-white">Itsar Irsyada Surga</span>
+                    <span class="font-display font-extrabold text-sm tracking-tight text-text-primary">Itsar Irsyada Surga</span>
                 </div>
                 
                 <div class="flex gap-6 text-sm text-text-secondary font-medium">
@@ -727,6 +870,40 @@
             });
         });
 
+        // Theme Toggle Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggleIcon = document.getElementById('theme-toggle-icon');
+        const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+        const themeToggleIconMobile = document.getElementById('theme-toggle-icon-mobile');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeToggleIcon.textContent = 'light_mode';
+                themeToggleIconMobile.textContent = 'light_mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeToggleIcon.textContent = 'dark_mode';
+                themeToggleIconMobile.textContent = 'dark_mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Initialize theme, default to dark
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        setTheme(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+            setTheme(currentTheme);
+        });
+
+        themeToggleMobile.addEventListener('click', () => {
+            const currentTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+            setTheme(currentTheme);
+        });
+
         // Chatbot Interface Integration
         const chatInput = document.querySelector('#chat-input');
         const sendBtn = document.querySelector('#send-btn');
@@ -751,7 +928,7 @@
             const typingBubble = `
                 <div class="flex items-start gap-3" id="${typingBubbleId}">
                     <div class="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">AI</div>
-                    <div class="bg-slate-800/80 border border-border-muted text-sm text-text-primary px-4 py-3 rounded-r-xl rounded-bl-xl max-w-md">
+                    <div class="bg-slate-800/10 dark:bg-slate-800/80 border border-border-muted text-sm text-text-primary px-4 py-3 rounded-r-xl rounded-bl-xl max-w-md">
                         <span class="animate-pulse">Thinking...</span>
                     </div>
                 </div>`;
@@ -776,7 +953,7 @@
                 const aiBubble = `
                     <div class="flex items-start gap-3">
                         <div class="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-xs font-mono">AI</div>
-                        <div class="bg-slate-800/80 border border-border-muted text-sm text-text-primary px-4 py-3 rounded-r-xl rounded-bl-xl max-w-md whitespace-pre-line leading-relaxed">${data.response}</div>
+                        <div class="bg-slate-800/10 dark:bg-slate-800/80 border border-border-muted text-sm text-text-primary px-4 py-3 rounded-r-xl rounded-bl-xl max-w-md whitespace-pre-line leading-relaxed">${data.response}</div>
                     </div>`;
                 chatBox.innerHTML += aiBubble;
                 chatBox.scrollTop = chatBox.scrollHeight;
